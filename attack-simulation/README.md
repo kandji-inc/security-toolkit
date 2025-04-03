@@ -14,15 +14,23 @@ Running this script requires elevated privileges (sudo), and depending on which 
 
 You can download the script directly using curl or wget from your terminal, or clone the entire repository:
 
-### Using curl
-```curl -O https://raw.githubusercontent.com/yourusername/your-repo/main/edr_test.sh```
+**Using curl**
 
-### Using wget
-```wget https://raw.githubusercontent.com/yourusername/your-repo/main/edr_test.sh```
+```shell
+curl -O https://raw.githubusercontent.com/kandji-inc/security-toolkit/main/attack-simulation/edr_test.sh
+```
 
-### Clone the entire repository
+**Using wget**
 
-```git clone https://github.com/yourusername/your-repo.git```
+```shell
+wget https://raw.githubusercontent.com/kandji-inc/security-toolkit/main/attack-simulation/edr_test.sh
+```
+
+**Clone the entire repository**
+
+```shell
+git clone https://github.com/kandji-inc/security-toolkit.git
+```
 
 2. Making the Script Executable
 
