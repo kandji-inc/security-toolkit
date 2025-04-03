@@ -2,15 +2,15 @@
 **Platform:** MacOS
 **Format:** zsh shell script
 
-*This script will execute several MacOS-specific MITRE ATT&CK adversarial behaviors.
+This script will execute several MacOS-specific MITRE ATT&CK adversarial behaviors.
 
 Among these behaviors is creating a new hidden file, curling malicious code into it, and executing. Kandji will both block the malicious process, and quarantine the randomly-generated file.
  
-Running this script requires elevated privileges (sudo), and depending on which Terminal program used, you may be prompted to allow access during execution.*
+Running this script requires elevated privileges (sudo), and depending on which Terminal program used, you may be prompted to allow access during execution.
 
 ---
 ## Run Attack Script
-1. Downloading the Script
+### 1. Downloading the Script
 
 You can download the script directly using curl or wget from your terminal, or clone the entire repository:
 
@@ -32,17 +32,21 @@ wget https://raw.githubusercontent.com/kandji-inc/security-toolkit/main/attack-s
 git clone https://github.com/kandji-inc/security-toolkit.git
 ```
 
-2. Making the Script Executable
+### 2. Making the Script Executable
 
 After downloading the script, you'll need to make it executable:
 
-```chmod +x edr_test.sh```
+```shell
+chmod +x edr_test.sh
+```
 
-3. Running the Script
+### 3. Running the Script
 
 Execute the script with the following command:
 
-```sudo ./edr_test.sh```
+```shell
+sudo ./edr_test.sh
+```
 
 ---
 ## Considerations
