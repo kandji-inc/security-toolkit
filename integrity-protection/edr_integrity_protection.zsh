@@ -85,48 +85,74 @@ for filepath in "${PROTECTED_KANDJI_LITERALS[@]}"; do
 done
 echo ""
 
-# Test 3: File Unlink Prevention on all protected paths
-echo "Test 3: Testing file unlink prevention on all protected paths..."
+# Test 3: Hard Link Source Prevention on all Kandji protected files
+echo "Test 3: Testing hard link source prevention on all Kandji protected files..."
+echo "--------------------------------------"
+for filepath in "${PROTECTED_KANDJI_LITERALS[@]}"; do
+    timestamp=$(/bin/date +%s)
+    link_destination="/tmp/hardlink_to_${timestamp}"
+    check_operation_blocked "Create hard link to $filepath" "sudo /bin/ln -f \"$filepath\" \"$link_destination\""
+done
+echo ""
+
+# Test 4: Hard Link Destination Prevention on all Kandji protected directories
+echo "Test 4: Testing hard link destination prevention on all Kandji protected directories..."
+echo "--------------------------------------"
+
+link_source="/tmp/hardlink_source_$(/bin/date +%s).txt"
+sudo /usr/bin/touch "$link_source" &>/dev/null
+
+for directory in "${PROTECTED_KANDJI_DIRECTORIES[@]}"; do
+    timestamp=$(/bin/date +%s)
+    link_destination="${directory}/hardlink_${timestamp}"
+    check_operation_blocked "Create hard link in $directory" "sudo /bin/ln -f \"$link_source\" \"$link_destination\""
+done
+
+/bin/rm -f "$link_source" &>/dev/null
+echo ""
+
+# Test 5: File Unlink Prevention on all protected paths
+echo "Test 5: Testing file unlink prevention on all protected paths..."
 echo "--------------------------------------"
 for filepath in "${ALL_PROTECTED_PATHS[@]}"; do
     check_operation_blocked "Delete $filepath" "sudo /bin/rm -rf \"$filepath\""
 done
 echo ""
 
-# Test 4: File Rename Prevention on all protected paths
-echo "Test 4: Testing file rename prevention on all protected paths..."
+# Test 6: File Rename Prevention on all protected paths
+echo "Test 6: Testing file rename prevention on all protected paths..."
 echo "--------------------------------------"
 for path in "${ALL_PROTECTED_PATHS[@]}"; do
     check_operation_blocked "Rename $path" "sudo /bin/mv \"$path\" \"${path}.bak\""
 done
 echo ""
 
-# Test 5: File Set Mode Prevention on all protected paths
-echo "Test 5: Testing file set mode (chmod) prevention on all protected paths..."
+# Test 7: File Set Mode Prevention on all protected paths
+echo "Test 7: Testing file set mode (chmod) prevention on all protected paths..."
 echo "--------------------------------------"
 for filepath in "${ALL_PROTECTED_PATHS[@]}"; do
     check_operation_blocked "Chmod $filepath" "sudo /bin/chmod 777 \"$filepath\""
 done
 echo ""
 
-# Test 6: File Set Owner Prevention on all protected paths
-echo "Test 6: Testing file set owner (chown) prevention on all protected paths..."
+# Test 8: File Set Owner Prevention on all protected paths
+echo "Test 8: Testing file set owner (chown) prevention on all protected paths..."
 echo "--------------------------------------"
 for filepath in "${ALL_PROTECTED_PATHS[@]}"; do
     check_operation_blocked "Chown $filepath" "sudo /usr/sbin/chown nobody \"$filepath\""
 done
 echo ""
 
-# Test 7: File Set Flags Prevention on all protected paths
-echo "Test 7: Testing file set flags (chflags) prevention on all protected paths..."
+# Test 9: File Set Flags Prevention on all protected paths
+echo "Test 9: Testing file set flags (chflags) prevention on all protected paths..."
 echo "--------------------------------------"
 for filepath in "${ALL_PROTECTED_PATHS[@]}"; do
     check_operation_blocked "Chflags $filepath" "sudo /usr/bin/chflags uchg \"$filepath\""
 done
 echo ""
 
-# Test 8: Mount Prevention on all protected directories
-echo "Test 8: Testing mount prevention on all protected directories..."
+# Test 10: Mount Prevention on all protected directories
+echo "Test 10: Testing mount prevention on all protected directories..."
 echo "--------------------------------------"
 
 timestamp=$(/bin/date +%s)
@@ -146,8 +172,8 @@ done
 /bin/rm -f "$temp_dmg"
 echo ""
 
-# Test 9: Launchctl BLocked Subcommands Prevention on all protected launch labels
-echo "Test 9: Testing launchctl blocked subcommands prevention on all protected launch labels..."
+# Test 11: Launchctl BLocked Subcommands Prevention on all protected launch labels
+echo "Test 11: Testing launchctl blocked subcommands prevention on all protected launch labels..."
 echo "--------------------------------------"
 LAUNCHCTL_SUBCOMMANDS=("unload" "bootout" "disable" "stop" "kill" "kickstart" "attach" "debug" "remove")
 for subcommand in "${LAUNCHCTL_SUBCOMMANDS[@]}"; do
@@ -157,8 +183,8 @@ for subcommand in "${LAUNCHCTL_SUBCOMMANDS[@]}"; do
 done
 echo ""
 
-# Test 10: Signal Prevention on all Kandji processes
-echo "Test 10: Testing signal prevention on all Kandji processes..."
+# Test 12: Signal Prevention on all Kandji processes
+echo "Test 12: Testing signal prevention on all Kandji processes..."
 echo "--------------------------------------"
 kandji_pids_before=$(/usr/bin/pgrep -i kandji 2>/dev/null || true)
 
@@ -172,9 +198,9 @@ if [ -n "$kandji_pids_before" ]; then
         done
     done
 
-    # Test 11: Verify the exact same Kandji processes are still running
+    # Test 13: Verify the exact same Kandji processes are still running
     echo ""
-    echo "Test 11: Verifying the exact same Kandji processes are still running..."
+    echo "Test 13: Verifying the exact same Kandji processes are still running..."
     echo "--------------------------------------"
     kandji_pids_after=$(/usr/bin/pgrep -i kandji 2>/dev/null || true)
     echo "Found Kandji PIDs: \n$kandji_pids_after"
